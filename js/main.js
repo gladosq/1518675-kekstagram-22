@@ -15,3 +15,6 @@ function lengthCalc (string, max) {
   }
   return true;
 }
+
+randomizer();
+lengthCalc();

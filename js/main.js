@@ -1,20 +1,26 @@
-function randomizer (num1, num2) {
-  if (num1 < num2 && num1 >= 0 && num2 >= 0) {
-    let randomValues = Math.random();  // Генерируем случайные вероятности
-    let randomCalculation = num1 + randomValues * (num2 + 1 - num1);  // Подгоняем под заданные минимум и максимум
-    randomCalculation = Math.floor(randomCalculation);  // Округляем до целого числа
-    return randomCalculation;
+function getRandomNumber (min, max) {
+  if ((typeof min) == 'number' && (typeof max) == 'number') {
+    if (min < max && min >= 0 && max >= 0) {
+      let randomValues = Math.random();
+      let randomCalculation = min + randomValues * (max + 1 - min);
+      randomCalculation = Math.floor(randomCalculation);
+      return randomCalculation;
+    }
+    return alert('Первое число не должно быть меньше или равняться второму!');
   }
-  return alert('Первое число не должно быть меньше или равняться второму!');
+  return alert('Введите корректные данные');
 }
 
-function lengthCalc (string, max) {
-  let stringValue = string.length;
-  if (stringValue > max) {
-    return false;
+function getStringLength (string, maxStringSize) {
+  if ((typeof string) == 'string' && (typeof maxStringSize) == 'number') {
+    if (string.length > maxStringSize) {
+      return false;
+    }
+    return true;
   }
-  return true;
+  return alert('Введите корректные данные');
 }
 
-randomizer();
-lengthCalc();
+getRandomNumber();
+getStringLength();
+

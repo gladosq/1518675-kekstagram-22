@@ -6,16 +6,15 @@ function getRandomNumber (min, max) {
       }
     }
   }
-  return false;
+  return 0;
 }
 
 function lengthStringCheck (string, maxStringSize) {
   if ((typeof string) == 'string' && (typeof maxStringSize) == 'number') {
     return (string.length < maxStringSize);
   }
-  return 0;
+  return false;
 }
 
 getRandomNumber();
 lengthStringCheck();
-

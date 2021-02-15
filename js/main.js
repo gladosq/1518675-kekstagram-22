@@ -49,11 +49,9 @@ function getRandomElement (array) {
 function createComments () {
   let fullCommentsArray = [];
   let singlePhotoComments = [];
-  let startNumber = 70;
   let randomSizeComment = getRandomNumber(1, MAX_SIZE_COMMENTS);
 
   for (let i = 1; i <= randomSizeComment; i++) {
-    startNumber += 10;
     let randomImgNumber = getRandomNumber(1, TOTAL_PHOTOS);
     let avatarUrl = 'img/avatar-' + randomImgNumber;
 

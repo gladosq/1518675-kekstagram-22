@@ -50,14 +50,12 @@ function createComments () {
   let randomSizeComment = getRandomNumber(1, MAX_SIZE_COMMENTS);
 
   for (let i = 1; i <= randomSizeComment; i++) {
-    photoComments.push(
-      {
-        id: i,
-        avatar: 'img/avatar-' + getRandomNumber(1, TOTAL_PHOTOS),
-        message: getRandomElement(messageArray),
-        name: getRandomElement(commentatorNames),
-      }
-    );
+    photoComments.push({
+      id: i,
+      avatar: 'img/avatar-' + getRandomNumber(1, TOTAL_PHOTOS),
+      message: getRandomElement(messageArray),
+      name: getRandomElement(commentatorNames),
+    });
   }
   return photoComments;
 }
@@ -67,15 +65,13 @@ createComments();
 function generatePhotos () {
   let generatedObjects = [];
   for (let i = 1; i < PHOTOS_COUNT; i++) {
-    generatedObjects.push(
-      {
-        id: i,
-        url: 'photos/' + i,
-        description: descriptionPhotos[i - 1],
-        likes: getRandomNumber(15, 200),
-        comments: createComments(),
-      }
-    );
+    generatedObjects.push({
+      id: i,
+      url: 'photos/' + i,
+      description: descriptionPhotos[i - 1],
+      likes: getRandomNumber(15, 200),
+      comments: createComments(),
+    });
   }
   return generatedObjects;
 }

@@ -1,4 +1,4 @@
-'use stict'
+'use strict'
 
 const PHOTOS_COUNT = 26;
 const TOTAL_PHOTOS = 6;
@@ -22,7 +22,6 @@ function lengthStringCheck (string, maxStringSize) {
   return false;
 }
 
-getRandomNumber();
 lengthStringCheck();
 
 const descriptionPhotos = ['Логика риторики', 'Сидим', 'Как заходить в хату', 'Видел такое', 'В горах Краснодарского края',
@@ -47,46 +46,38 @@ function getRandomElement (array) {
 }
 
 function createComments () {
-  let fullCommentsArray = [];
-  let singlePhotoComments = [];
+  let photoComments = [];
   let randomSizeComment = getRandomNumber(1, MAX_SIZE_COMMENTS);
 
   for (let i = 1; i <= randomSizeComment; i++) {
-    let randomImgNumber = getRandomNumber(1, TOTAL_PHOTOS);
-    let avatarUrl = 'img/avatar-' + randomImgNumber;
-
-    let comment = {
-      id: i,
-      avatar: avatarUrl,
-      message: getRandomElement(messageArray),
-      name: getRandomElement(commentatorNames),
-    };
-
-    singlePhotoComments.push(comment);
+    photoComments.push(
+      {
+        id: i,
+        avatar: 'img/avatar-' + getRandomNumber(1, TOTAL_PHOTOS),
+        message: getRandomElement(messageArray),
+        name: getRandomElement(commentatorNames),
+      }
+    );
   }
-  fullCommentsArray.push(singlePhotoComments);
-
-  return fullCommentsArray;
+  return photoComments;
 }
 
 createComments();
 
 function generatePhotos () {
-  let generatedObject = [];
+  let generatedObjects = [];
   for (let i = 1; i < PHOTOS_COUNT; i++) {
-    let urlValue = 'photos/' + [i];
-    let randomLikes = getRandomNumber(15, 200);
-
-    let object = {
-      id: Number([i]),
-      url: urlValue,
-      description: descriptionPhotos[i - 1],
-      likes: randomLikes,
-      comments: createComments(),
-    };
-    generatedObject.push(object);
+    generatedObjects.push(
+      {
+        id: i,
+        url: 'photos/' + i,
+        description: descriptionPhotos[i - 1],
+        likes: getRandomNumber(15, 200),
+        comments: createComments(),
+      }
+    );
   }
-  return generatedObject;
+  return generatedObjects;
 }
 
 generatePhotos();

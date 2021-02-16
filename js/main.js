@@ -1,8 +1,11 @@
 'use strict'
 
-const PHOTOS_COUNT = 26;
+const PHOTOS_COUNT = 25;
 const TOTAL_PHOTOS = 6;
 const MAX_SIZE_COMMENTS = 4;
+const MIN_AMOUNT_LIKES = 15;
+const MAX_AMOUNT_LIKES = 200;
+
 
 function getRandomNumber (min, max) {
   if ((typeof min) == 'number' && (typeof max) == 'number') {
@@ -60,16 +63,14 @@ function createComments () {
   return photoComments;
 }
 
-createComments();
-
 function generatePhotos () {
   let generatedObjects = [];
-  for (let i = 1; i < PHOTOS_COUNT; i++) {
+  for (let i = 1; i <= PHOTOS_COUNT; i++) {
     generatedObjects.push({
       id: i,
       url: 'photos/' + i,
-      description: descriptionPhotos[i - 1],
-      likes: getRandomNumber(15, 200),
+      description: getRandomElement(descriptionPhotos),
+      likes: getRandomNumber(MIN_AMOUNT_LIKES, MAX_AMOUNT_LIKES),
       comments: createComments(),
     });
   }

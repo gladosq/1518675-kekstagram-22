@@ -1,4 +1,4 @@
-import {getRandomNumber, getRandomElement} from './util.js';
+import {getRandomNumber, getRandomElement} from './utils.js';
 
 const PHOTOS_COUNT = 25;
 const TOTAL_PHOTOS = 6;
@@ -51,6 +51,4 @@ function generatePhotos () {
   return generatedObjects;
 }
 
-generatePhotos();
-
-export {createComments, generatePhotos};
+export {generatePhotos};

@@ -22,8 +22,4 @@ function lengthStringCheck (string, maxStringSize) {
   return false;
 }
 
-lengthStringCheck();
-
-
-
 export {getRandomNumber, lengthStringCheck, getRandomElement};

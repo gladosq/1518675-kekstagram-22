@@ -42,7 +42,7 @@ function generatePhotos () {
   for (let i = 1; i <= PHOTOS_COUNT; i++) {
     generatedObjects.push({
       id: i,
-      url: 'photos/' + i,
+      url: 'photos/' + i + '.jpg',
       description: getRandomElement(descriptionPhotos),
       likes: getRandomNumber(MIN_AMOUNT_LIKES, MAX_AMOUNT_LIKES),
       comments: createComments(),

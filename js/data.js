@@ -51,4 +51,4 @@ function generatePhotos () {
   return generatedObjects;
 }
 
-export {generatePhotos};
+export {generatePhotos, PHOTOS_COUNT};

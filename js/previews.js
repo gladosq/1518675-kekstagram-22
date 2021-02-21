@@ -1,4 +1,4 @@
-import {generatePhotos} from './data.js';
+import {generatePhotos, PHOTOS_COUNT} from './data.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const templatePicture = document.querySelector('#picture').content;
@@ -7,7 +7,7 @@ const fragment = document.createDocumentFragment();
 
 function createNodeElement (element) {
   let generatedObjects = generatePhotos();
-  for (let i = 0; i < 25; i++) {
+  for (let i = 0; i < PHOTOS_COUNT; i++) {
     let newElement = element.cloneNode(true);
     let newPicture = newElement.querySelector('.picture__img');
     let newPictureLikes = newElement.querySelector('.picture__likes');
@@ -24,3 +24,4 @@ function createNodeElement (element) {
 }
 
 createNodeElement(picture);
+console.log(PHOTOS_COUNT);

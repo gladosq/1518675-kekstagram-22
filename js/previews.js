@@ -24,4 +24,3 @@ function createNodeElement (element) {
 }
 
 createNodeElement(picture);
-console.log(PHOTOS_COUNT);

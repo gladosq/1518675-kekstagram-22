@@ -1,4 +1,8 @@
 import {generatePhotos} from './data.js';
-import './previews.js';
+import {createPreviewElements} from './previews.js';
+import './full-pictures.js';
 
-generatePhotos();
+const photos = generatePhotos();
+
+createPreviewElements(photos);
+

@@ -29,7 +29,7 @@ function createComments () {
   for (let i = 1; i <= randomSizeComment; i++) {
     photoComments.push({
       id: i,
-      avatar: 'img/avatar-' + getRandomNumber(1, TOTAL_PHOTOS),
+      avatar: 'img/avatar-' + getRandomNumber(1, TOTAL_PHOTOS) + '.svg',
       message: getRandomElement(messageArray),
       name: getRandomElement(commentatorNames),
     });

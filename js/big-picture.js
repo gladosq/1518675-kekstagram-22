@@ -7,8 +7,9 @@ const socialComment = commentsContainer.children;
 const socialCaption = document.querySelector('.social__caption');
 const commentCount = document.querySelector('.social__comment-count');
 const commentLoaderButton = document.querySelector('.comments-loader');
+const closeButton = document.querySelector('.big-picture__cancel');
 
-function fullSizeRender (arrayPhotos) {
+function showBigPicture (arrayPhotos) {
   let picturesArray = document.querySelectorAll('.picture');
   picturesArray.forEach((pictureItem, index) => {
     pictureItem.addEventListener('click', function() {
@@ -20,12 +21,12 @@ function fullSizeRender (arrayPhotos) {
       bigPictureUrl.src = imageLink.src;
       bigPictureLikes.textContent = imageLikes.textContent;
       bigPictureComments.textContent = imageComments.textContent;
-      fullSizeCommentsRender(arrayPhotos, index);
+      renderComments(arrayPhotos, index);
     });
   });
 }
 
-function fullSizeCommentsRender (photos, indexArray) {
+function renderComments (photos, indexArray) {
   let newElement = socialComment[0].cloneNode(true);
   socialComment[0].remove();
   socialComment[0].remove();
@@ -44,4 +45,9 @@ function fullSizeCommentsRender (photos, indexArray) {
   }
 }
 
-export {fullSizeRender, fullSizeCommentsRender};
+closeButton.addEventListener('click', function() {
+  document.body.classList.remove('modal-open');
+  bigPictureSection.classList.add('hidden');
+});
+
+export {showBigPicture, renderComments};

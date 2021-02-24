@@ -1,4 +1,6 @@
-import './utils.js';
 import {generatePhotos} from './data.js';
+import {createPreviewElements} from './previews.js';
 
-generatePhotos();
+const photos = generatePhotos();
+
+createPreviewElements(photos);

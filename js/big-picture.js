@@ -1,53 +1,71 @@
-const bigPictureSection = document.querySelector('.big-picture');
-const bigPictureUrl = bigPictureSection.querySelector('.big-picture__url');
-const bigPictureLikes = bigPictureSection.querySelector('.likes-count');
-const bigPictureComments = bigPictureSection.querySelector('.comments-count');
+const pictureSection = document.querySelector('.big-picture');
+const pictureUrl = pictureSection.querySelector('.big-picture__url');
+const pictureLikes = pictureSection.querySelector('.likes-count');
+const pictureComments = pictureSection.querySelector('.comments-count');
 const commentsContainer = document.querySelector('.social__comments');
-const socialComment = commentsContainer.children;
 const socialCaption = document.querySelector('.social__caption');
 const commentCount = document.querySelector('.social__comment-count');
 const commentLoaderButton = document.querySelector('.comments-loader');
 const closeButton = document.querySelector('.big-picture__cancel');
+const templateComment = document.querySelector('#message').content.querySelector('.social__comment');
 
-function showBigPicture (arrayPhotos) {
+function showBigPicture (photo) {
+  renderPicture(photo);
+}
+
+function onClickPreview (photos) {
   let picturesArray = document.querySelectorAll('.picture');
   picturesArray.forEach((pictureItem, index) => {
     pictureItem.addEventListener('click', function() {
       document.body.classList.add('modal-open');
-      bigPictureSection.classList.remove('hidden');
-      let imageLink = pictureItem.querySelector('.picture__img');
-      let imageLikes = pictureItem.querySelector('.picture__likes');
-      let imageComments = pictureItem.querySelector('.picture__comments');
-      bigPictureUrl.src = imageLink.src;
-      bigPictureLikes.textContent = imageLikes.textContent;
-      bigPictureComments.textContent = imageComments.textContent;
-      renderComments(arrayPhotos, index);
+      pictureSection.classList.remove('hidden');
+      showBigPicture(photos[index]);
+      renderComments(photos[index]);
     });
   });
 }
 
-function renderComments (photos, indexArray) {
-  let newElement = socialComment[0].cloneNode(true);
-  socialComment[0].remove();
-  socialComment[0].remove();
-  for (let i = 0; i < photos[indexArray].comments.length; i++) {
-    let newCloneComment = newElement.cloneNode(true);
-    let newCommentPicture = newCloneComment.querySelector('.social__picture');
-    let newTextPicture = newCloneComment.querySelector('.social__text');
-    newCommentPicture.src = photos[indexArray].comments[i].avatar;
-    newCloneComment.alt = photos[indexArray].comments[i].name;
-    newTextPicture.textContent = photos[indexArray].comments[i].message;
-    commentsContainer.appendChild(newCloneComment);
+function renderPicture (photo) {
+  pictureUrl.src = photo.url;
+  pictureLikes.textContent = photo.likes;
+  pictureComments.textContent = photo.comments.length;
+}
 
-    socialCaption.textContent = photos[indexArray].description;
-    commentCount.classList.add('hidden');
-    commentLoaderButton.classList.add('hidden');
+function clearComments () {
+  while (commentsContainer.firstChild) {
+    commentsContainer.removeChild(commentsContainer.firstChild);
   }
 }
 
-closeButton.addEventListener('click', function() {
+function hideBigPicture () {
   document.body.classList.remove('modal-open');
-  bigPictureSection.classList.add('hidden');
+  pictureSection.classList.add('hidden');
+}
+
+function renderComments (photo) {
+  clearComments();
+  let fragment = document.createDocumentFragment();
+  for (let i = 0; i < photo.comments.length; i++) {
+    let newComment = templateComment.cloneNode(true);
+    newComment.querySelector('.social__picture').src = photo.comments[i].avatar;
+    newComment.querySelector('.social__picture').alt = photo.comments[i].name;
+    newComment.querySelector('.social__text').textContent = photo.comments[i].message;
+    fragment.appendChild(newComment);
+  }
+  commentCount.classList.add('hidden');
+  commentLoaderButton.classList.add('hidden');
+  socialCaption.textContent = photo.description;
+  commentsContainer.appendChild(fragment);
+}
+
+closeButton.addEventListener('click', function() {
+  hideBigPicture();
 });
 
-export {showBigPicture, renderComments};
+window.addEventListener('keydown', function(evt) {
+  if (evt.keyCode === 27) {
+    hideBigPicture();
+  }
+});
+
+export {showBigPicture, renderComments, onClickPreview};

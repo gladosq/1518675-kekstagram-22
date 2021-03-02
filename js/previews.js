@@ -1,5 +1,3 @@
-import {fullSizeRender} from './full-pictures.js';
-
 const picturesContainer = document.querySelector('.pictures');
 const templatePicture = document.querySelector('#picture').content.querySelector('.picture');
 
@@ -11,13 +9,12 @@ function createPictureElement (indexArray) {
   return newElement;
 }
 
-function createPreviewElements (array) {
+function createPreviewElements (photos) {
   const fragment = document.createDocumentFragment();
-  for (let i = 0; i < array.length; i++) {
-    fragment.appendChild(createPictureElement(array[i]));
+  for (let i = 0; i < photos.length; i++) {
+    fragment.appendChild(createPictureElement(photos[i]));
   }
   picturesContainer.appendChild(fragment);
-  fullSizeRender(array);
 }
 
 export {createPreviewElements};

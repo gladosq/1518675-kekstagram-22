@@ -14,7 +14,6 @@ function getRandomElement (array) {
   return array[element];
 }
 
-
 function lengthStringCheck (string, maxStringSize) {
   if ((typeof string) == 'string' && (typeof maxStringSize) == 'number') {
     return (string.length < maxStringSize);

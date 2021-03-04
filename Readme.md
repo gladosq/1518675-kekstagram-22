@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм»
 
 * Студент: [Никита Шишкин](https://up.htmlacademy.ru/javascript/22/user/1518675).
-* Наставник: [Анастасия Шишова](https://htmlacademy.ru/profile/anashi).
+* Наставник: [Максим Деев](https://htmlacademy.ru/profile/id685777).
 
 ---
 

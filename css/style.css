@@ -668,6 +668,17 @@ main {
           filter: brightness(3);
 }
 
+.scale-75-percent img {
+  transform: scale(0.75);
+}
+
+.scale-50-percent img {
+  transform: scale(0.5);
+}
+
+.scale-25-percent img {
+  transform: scale(0.25);
+}
 
 /**
  * Блок добавления хэштегов и комментария к изображению

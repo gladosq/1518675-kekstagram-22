@@ -33,6 +33,7 @@ function hideEditorHandler (e) {
 
 cancelButton.addEventListener('click', hideEditorHandler);
 
+window.addEventListener('keydown', hideEditorHandler);
 
 function changeValue (step) {
   imgUpldoadPreview.classList.remove('scale-' + scaleControlValue + '-percent');
@@ -55,7 +56,7 @@ biggerButton.addEventListener('click', function() {
   }
 });
 
-noUiSlider.create(effectsSlider, {
+window.noUiSlider.create(effectsSlider, {
   range: {
     min: 0,
     max: 100,
@@ -63,12 +64,24 @@ noUiSlider.create(effectsSlider, {
   start: 100,
   step: 1,
   connect: 'lower',
+  format: {
+    to: function (value) {
+      if (Number.isInteger(value)) {
+        return value.toFixed(0);
+      }
+      return value.toFixed(1);
+    },
+    from: function (value) {
+      return parseFloat(value);
+    },
+  },
 });
 
 const previewEffects = {
   'effect-chrome': {
     class: 'effects__preview--chrome',
     filter: 'grayscale(',
+    filterEnding: '',
     minValue: 0,
     maxValue: 1,
     start: 1,
@@ -77,6 +90,7 @@ const previewEffects = {
   'effect-sepia': {
     class: 'effects__preview--sepia',
     filter: 'sepia(',
+    filterEnding: '',
     minValue: 0,
     maxValue: 1,
     start: 1,
@@ -84,7 +98,8 @@ const previewEffects = {
   },
   'effect-marvin': {
     class: 'effects__preview--marvin',
-    filter: 'marvin(',
+    filter: 'invert(',
+    filterEnding: '%',
     minValue: 0,
     maxValue: 100,
     start: 100,
@@ -92,15 +107,17 @@ const previewEffects = {
   },
   'effect-phobos': {
     class: 'effects__preview--phobos',
-    filter: 'phobos(',
+    filter: 'blur(',
+    filterEnding: 'px',
     minValue: 0,
     maxValue: 3,
     start: 3,
     step: 0.1,
   },
   'effect-heat': {
-    class: 'effects__preview--phobos',
-    filter: 'phobos(',
+    class: 'effects__preview--heat',
+    filter: 'brightness(',
+    filterEnding: '',
     minValue: 1,
     maxValue: 3,
     start: 3,
@@ -124,9 +141,9 @@ function changePreviewEffect () {
         imgUpldoadPreview.classList.add(previewEffects[effect.id].class);
         changeSliderOptions(previewEffects[effect.id].minValue, previewEffects[effect.id].maxValue, previewEffects[effect.id].start, previewEffects[effect.id].step);
 
-        effectsSlider.noUiSlider.on('update', (_, handle, unencoded) => {
-          effectLevelValue.value = unencoded[handle];
-          imgUpldoadPreview.style.filter = previewEffects[effect.id].filter + effectLevelValue.value + ')';
+        effectsSlider.noUiSlider.on('update', (values, handle) => {
+          effectLevelValue.value = values[handle];
+          imgUpldoadPreview.style.filter = previewEffects[effect.id].filter + effectLevelValue.value + previewEffects[effect.id].filterEnding + ')';
         })
       }
     })

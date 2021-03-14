@@ -9,6 +9,8 @@ const commentLoaderButton = document.querySelector('.comments-loader');
 const closeButton = document.querySelector('.big-picture__cancel');
 const templateComment = document.querySelector('#message').content.querySelector('.social__comment');
 
+const MAX_COMMENTS_PHOTO = 5;
+
 function showBigPicture (photo) {
   renderPicture(photo);
 }
@@ -45,7 +47,7 @@ function hideBigPicture () {
 function renderComments (photo) {
   clearComments();
   let fragment = document.createDocumentFragment();
-  for (let i = 0; i < photo.comments.length; i++) {
+  for (let i = 0; i < MAX_COMMENTS_PHOTO; i++) {
     let newComment = templateComment.cloneNode(true);
     newComment.querySelector('.social__picture').src = photo.comments[i].avatar;
     newComment.querySelector('.social__picture').alt = photo.comments[i].name;

@@ -20,6 +20,7 @@ function checkValidityHashtag (hashtag) {
 
 hashtagsInput.addEventListener('input', () => {
   let hashtags = hashtagsInput.value.split(' ');
+  console.log(hashtags);
 
   hashtags.forEach((hashtag) => {
     if (hashtag[0] != '#') {
@@ -38,23 +39,25 @@ hashtagsInput.addEventListener('input', () => {
   hashtagsInput.reportValidity();
 });
 
-let hashtagsArray = [];
-submitButton.addEventListener('click', function (evt) {
+const checkSubmitForm = (onSuccess) => {
+  submitButton.addEventListener('submit', function (evt) {
+    evt.preventDefault();
 
-  let hashtags = hashtagsInput.value.split(' ');
-  hashtags.forEach((hashtag) => {
-    hashtagsArray.push(hashtag);
+    const formData = new FormData(evt.target);
+
+    fetch(
+      'https://22.javascript.pages.academy/kekstagram',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+    .then(() => onSuccess())
+    .catch((err) => {
+      console.error(err);
+    });
   });
 
-  for (let i = 0; i < hashtagsArray.length; i++) {
-    let newElement = hashtagsArray[i];
-    hashtagsArray.splice(i, 1);
+}
 
-    for (let j = 0; j < hashtagsArray.length; j++) {
-      if (newElement == hashtagsArray[j]) {
-        evt.preventDefault();
-        break;
-      }
-    }
-  }
-});
+export {checkSubmitForm};

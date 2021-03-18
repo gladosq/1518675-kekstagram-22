@@ -1,8 +1,17 @@
+const imgFilters = document.querySelector('.img-filters');
+
 const getData = (onSuccess) => {
-  fetch('https://22.javascript.pages.academy/kekstagram/data')
+  fetch(
+    'https://22.javascript.pages.academy/kekstagram/data',
+    {
+      method: 'GET',
+      credentials: 'same-origin',
+    },
+  )
     .then((response) => response.json())
-    .then((photos) => {
-      onSuccess(photos);
+    .then((response) => {
+      onSuccess(response);
+      imgFilters.classList.remove('img-filters--inactive');
     });
 };
 

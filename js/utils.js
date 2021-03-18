@@ -21,4 +21,8 @@ function lengthStringCheck (string, maxStringSize) {
   return false;
 }
 
-export {getRandomNumber, lengthStringCheck, getRandomElement};
+function sortFunction (a, b) {
+  return (b - a);
+}
+
+export {getRandomNumber, lengthStringCheck, getRandomElement, sortFunction};

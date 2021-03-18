@@ -40,6 +40,7 @@ hashtagsInput.addEventListener('input', () => {
   hashtagsInput.reportValidity();
 });
 
+
 submitForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 

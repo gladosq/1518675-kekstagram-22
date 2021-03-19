@@ -1,7 +1,9 @@
-const hashtagsInput = document.querySelector('.text__hashtags');
-const submitButton = document.querySelector('.img-upload__submit');
+import {sendData} from './api.js';
 
-const MIN_HASHTAG_LENGTH = 3;
+const hashtagsInput = document.querySelector('.text__hashtags');
+const submitForm = document.querySelector('.img-upload__form');
+
+// const MIN_HASHTAG_LENGTH = 3;
 const MAX_HASHTAG_LENGTH = 20;
 const MAX_HASHTAGS_COUNT = 5;
 
@@ -20,7 +22,6 @@ function checkValidityHashtag (hashtag) {
 
 hashtagsInput.addEventListener('input', () => {
   let hashtags = hashtagsInput.value.split(' ');
-  console.log(hashtags);
 
   hashtags.forEach((hashtag) => {
     if (hashtag[0] != '#') {
@@ -29,7 +30,7 @@ hashtagsInput.addEventListener('input', () => {
       hashtagsInput.setCustomValidity('Введены некорректные символы');
     } else if (hashtag.length > MAX_HASHTAG_LENGTH) {
       hashtagsInput.setCustomValidity('Превышена максимальная длина хэштега');
-    } else if (hashtags.length > 5) {
+    } else if (hashtags.length > MAX_HASHTAGS_COUNT) {
       hashtagsInput.setCustomValidity('Максимальное кол-во хэштегов - 5');
     } else {
       hashtagsInput.setCustomValidity('');
@@ -39,25 +40,17 @@ hashtagsInput.addEventListener('input', () => {
   hashtagsInput.reportValidity();
 });
 
-const checkSubmitForm = (onSuccess) => {
-  submitButton.addEventListener('submit', function (evt) {
-    evt.preventDefault();
 
-    const formData = new FormData(evt.target);
+submitForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
 
-    fetch(
-      'https://22.javascript.pages.academy/kekstagram',
-      {
-        method: 'POST',
-        body: formData,
-      },
-    )
-    .then(() => onSuccess())
-    .catch((err) => {
-      console.error(err);
-    });
-  });
+  const formData = new FormData(evt.target);
 
-}
-
-export {checkSubmitForm};
+  sendData(
+    () => onSuccess(),
+    () => () => {
+      alert('Данные заполнены не верно')
+    },
+    new FormData(evt.target),
+  );
+});

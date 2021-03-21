@@ -1217,7 +1217,8 @@ main {
  */
 
 .error,
-.success {
+.success,
+.fail {
   position: fixed;
   display: flex;
   justify-content: center;
@@ -1233,7 +1234,8 @@ main {
 }
 
 .error__inner,
-.success__inner {
+.success__inner,
+.fail__inner {
   position: relative;
   width: 600px;
   padding: 50px 20px;
@@ -1255,7 +1257,12 @@ main {
   border-radius: 10px;
 }
 
-.success__inner {
+.fail__inner {
+  line-height: 30px;
+}
+
+.success__inner,
+.fail__inner {
   padding: 100px 20px;
   padding-bottom: 75px;
 }
@@ -1269,7 +1276,8 @@ main {
   font-size: 32px;
 }
 
-.success__title {
+.success__title,
+.fail__title {
   margin: 0;
   margin-bottom: 50px;
 
@@ -1294,7 +1302,8 @@ main {
 }
 
 .error__button,
-.success__button {
+.success__button,
+.fail__button {
   padding: 5px 10px;
 
   color: #ffffff;
@@ -1308,12 +1317,15 @@ main {
 .error__button:hover,
 .error__button:focus,
 .success__button:hover,
-.success__button:focus {
+.success__button:focus,
+.fail__button:hover,
+.fail__button:focus {
   opacity: 0.8;
 }
 
 .error__button:active,
-.success__button:active {
+.success__button:active,
+.fail__button:active {
   opacity: 0.6;
 }
 

@@ -11,7 +11,7 @@
 </head>
 
 <body>
-  <main>
+  <main class="main">
     <!-- Фильтрация изображений от других пользователей -->
     <section class="img-filters  img-filters--inactive  container">
       <h2 class="img-filters__title  visually-hidden">Фильтр фотографий</h2>
@@ -53,7 +53,7 @@
 
                   <!-- Предварительный просмотр изображения -->
                   <div class="img-upload__preview">
-                    <img src="img/upload-default-image.jpg" alt="Предварительный просмотр фотографии">
+                    <img class="img-upload__preview-image" src="img/upload-default-image.jpg" alt="Предварительный просмотр фотографии">
                   </div>
 
                   <!-- Изменение глубины эффекта, накладываемого на изображение -->
@@ -117,7 +117,7 @@
                 <!-- Добавление хэш-тегов и комментария к изображению -->
                 <fieldset class="img-upload__text text">
                   <input class="text__hashtags" name="hashtags" placeholder="#ХэшТег">
-                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..."></textarea>
+                  <textarea class="text__description" name="description" placeholder="Ваш комментарий..." maxlength="140"></textarea>
                 </fieldset>
 
                 <!-- Кнопка для отправки данных на сервер -->
@@ -230,6 +230,16 @@
       <div class="success__inner">
         <h2 class="success__title">Изображение успешно загружено</h2>
         <button type="button" class="success__button">Круто!</button>
+      </div>
+    </section>
+  </template>
+
+  <!-- Сообщение об ошибки сервера -->
+  <template id="fail-server">
+    <section class="fail">
+      <div class="fail__inner">
+        <h2 class="fail__title">Ошибка загрузки изображений с сервера</h2>
+        <button type="button" class="fail__button">Закрыть</button>
       </div>
     </section>
   </template>

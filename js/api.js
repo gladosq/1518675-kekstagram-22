@@ -1,3 +1,5 @@
+import {failServerModal} from './upload.js';
+
 const imgFilters = document.querySelector('.img-filters');
 
 const getData = (onSuccess) => {
@@ -12,7 +14,8 @@ const getData = (onSuccess) => {
     .then((response) => {
       onSuccess(response);
       imgFilters.classList.remove('img-filters--inactive');
-    });
+    })
+    .catch(() => failServerModal())
 };
 
 const sendData = (onSuccess, onFail, body) => {
@@ -27,12 +30,9 @@ const sendData = (onSuccess, onFail, body) => {
       if (response.ok) {
         onSuccess();
       } else {
-        onFail('Данные заполнены не верно');
+        onFail();
       }
     })
-    .catch(() => {
-      onFail('Данные заполнены не верно');
-    });
 };
 
 export {getData, sendData};

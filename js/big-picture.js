@@ -11,10 +11,6 @@ const templateComment = document.querySelector('#message').content.querySelector
 
 const MAX_COMMENTS_PHOTO = 5;
 
-function showBigPicture (photo) {
-  renderPicture(photo);
-}
-
 function onClickPreview (photos) {
   let picturesArray = document.querySelectorAll('.picture');
   picturesArray.forEach((pictureItem, index) => {
@@ -25,6 +21,10 @@ function onClickPreview (photos) {
       renderComments(photos[index]);
     });
   });
+}
+
+function showBigPicture (photo) {
+  renderPicture(photo);
 }
 
 function renderPicture (photo) {
@@ -56,6 +56,8 @@ function renderComments (photo) {
   } else if (commentLoaderButton.classList.contains('hidden') && commentCount.classList.contains('hidden')) {
     commentLoaderButton.classList.remove('hidden');
     commentCount.classList.remove('hidden');
+  } else {
+    commentLoaderButton.classList.remove('hidden');
   }
 
   for (let i = 0; i < commentsPhotoValue; i++) {
@@ -84,7 +86,6 @@ function renderComments (photo) {
 
       sum+= 5;
     } else {
-
       let diffPhoto = photo.comments.length - (sum + MAX_COMMENTS_PHOTO);
 
       for (let i = sum + MAX_COMMENTS_PHOTO; i < diffPhoto + MAX_COMMENTS_PHOTO + sum; i++) {
@@ -95,6 +96,7 @@ function renderComments (photo) {
         newComment.querySelector('.social__text').textContent = photo.comments[i].message;
         fragment.appendChild(newComment);
       }
+      commentLoaderButton.classList.add('hidden');
 
       sum = sum + diffPhoto;
     }
@@ -110,6 +112,7 @@ closeButton.addEventListener('click', function() {
 
 window.addEventListener('keydown', function(evt) {
   if (evt.keyCode === 27) {
+
     hideBigPicture();
   }
 });

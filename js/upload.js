@@ -6,14 +6,38 @@ const cancelButton = document.querySelector('#upload-cancel');
 const smallerButton = document.querySelector('.scale__control--smaller');
 const biggerButton = document.querySelector('.scale__control--bigger');
 const scaleControl = document.querySelector('.scale__control--value');
-const imgUpldoadPreview = document.querySelector('.img-upload__preview');
+const imgUploadPreview = document.querySelector('.img-upload__preview');
+const imgUploadPreviewImage = document.querySelector('.img-upload__preview-image');
 const effectsSlider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
+const templateSuccessModal = document.querySelector('#success').content.querySelector('.success');
+const mainPage = document.querySelector('.main');
+const templateErrorModal = document.querySelector('#error').content.querySelector('.error');
+const templateFailServerModal = document.querySelector('#fail-server').content.querySelector('.fail');
+
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
 let scaleControlValue = 100;
 effectLevelValue.value = 100;
 
 imgInput.addEventListener('change', function() {
+  const imgFile = imgInput.files[0];
+  const imgFileName = imgFile.name.toLowerCase();
+
+  const checkFileName = FILE_TYPES.some((name) => {
+    return imgFileName.endsWith(name);
+  });
+
+  if (checkFileName) {
+    const reader = new FileReader();
+
+    reader.addEventListener('load', () => {
+      imgUploadPreviewImage.src = reader.result;
+    })
+
+    reader.readAsDataURL(imgFile);
+  }
+
   imgEditor.classList.remove('hidden');
   document.body.classList.add('modal-open');
 });
@@ -22,6 +46,12 @@ function hideEditor () {
   imgEditor.classList.add('hidden');
   document.body.classList.remove('modal-open');
   imgInput.value = '';
+  imgUploadPreview.className = 'img-upload__preview';
+  imgUploadPreview.style.filter = 'none';
+  let firstEffect = document.querySelector('.effects__radio');
+  firstEffect.checked = true;
+  effectsSlider.classList.add('hidden');
+  scaleControl.value = '100%';
 }
 
 function hideEditorHandler (e) {
@@ -36,12 +66,12 @@ cancelButton.addEventListener('click', hideEditorHandler);
 window.addEventListener('keydown', hideEditorHandler);
 
 function changeValue (step) {
-  imgUpldoadPreview.classList.remove('scale-' + scaleControlValue + '-percent');
+  imgUploadPreview.classList.remove('scale-' + scaleControlValue + '-percent');
 
   let newValue = parseInt(scaleControl.value) + step;
   scaleControl.value = newValue + '%';
   scaleControlValue = newValue;
-  imgUpldoadPreview.classList.add('scale-' + newValue + '-percent');
+  imgUploadPreview.classList.add('scale-' + newValue + '-percent');
 }
 
 smallerButton.addEventListener('click', function() {
@@ -132,18 +162,20 @@ function changePreviewEffect () {
     effect.addEventListener('change', function() {
       if (effect.id == 'effect-none') {
         effectsSlider.classList.add('hidden');
-        imgUpldoadPreview.style.filter = 'none';
+        imgUploadPreview.style.filter = 'none';
+        imgUploadPreview.className = 'img-upload__preview';
+        scaleControl.value = '100%';
       } else {
         effectsSlider.noUiSlider.off();
-
         effectsSlider.classList.remove('hidden');
-        imgUpldoadPreview.className = 'img-upload__preview';
-        imgUpldoadPreview.classList.add(previewEffects[effect.id].class);
+        imgUploadPreview.className = 'img-upload__preview';
+        scaleControl.value = '100%';
+        imgUploadPreview.classList.add(previewEffects[effect.id].class);
         changeSliderOptions(previewEffects[effect.id].minValue, previewEffects[effect.id].maxValue, previewEffects[effect.id].start, previewEffects[effect.id].step);
 
         effectsSlider.noUiSlider.on('update', (values, handle) => {
           effectLevelValue.value = values[handle];
-          imgUpldoadPreview.style.filter = previewEffects[effect.id].filter + effectLevelValue.value + previewEffects[effect.id].filterEnding + ')';
+          imgUploadPreview.style.filter = previewEffects[effect.id].filter + effectLevelValue.value + previewEffects[effect.id].filterEnding + ')';
         })
       }
     })
@@ -161,4 +193,70 @@ function changeSliderOptions (minValue, maxValue, start, step) {
   })
 }
 
-export {changePreviewEffect};
+function showSuccessModal () {
+  let modal = templateSuccessModal.cloneNode(true);
+  mainPage.appendChild(modal);
+  const successButton = document.querySelector('.success__button');
+  successButton.addEventListener('click', function () {
+    modal.parentNode.removeChild(modal);
+  })
+  window.addEventListener('keydown', function (evt) {
+    if (evt.type === 'keydown' && evt.key == 'Escape') {
+      modal.parentNode.removeChild(modal);
+    }
+  })
+
+  window.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('success')) {
+      modal.parentNode.removeChild(modal);
+    }
+  })
+}
+
+function showErrorModal () {
+  imgEditor.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  let modal = templateErrorModal.cloneNode(true);
+  mainPage.appendChild(modal);
+  window.addEventListener('keydown', function (evt) {
+    if (evt.type == 'keydown' && evt.key == 'Escape') {
+      modal.parentNode.removeChild(modal);
+    }
+  })
+  window.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('error') || evt.target.classList.contains('error__button')) {
+      modal.parentNode.removeChild(modal);
+    }
+  })
+}
+
+function failServerModal () {
+  let modal = templateFailServerModal.cloneNode(true);
+  mainPage.appendChild(modal);
+  window.addEventListener('keydown', function (evt) {
+    if (evt.type == 'keydown' && evt.key == 'Escape') {
+      modal.parentNode.removeChild(modal);
+    }
+  })
+  window.addEventListener('click', function (evt) {
+    if (evt.target.classList.contains('fail') || evt.target.classList.contains('fail__button')) {
+      modal.parentNode.removeChild(modal);
+    }
+  })
+}
+
+function closeSuccessForm () {
+  imgEditor.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+  effectLevelValue.value = 100;
+  effectsSlider.classList.add('hidden');
+  imgUploadPreview.className = 'img-upload__preview';
+  imgUploadPreview.style.filter = 'none';
+  imgUploadPreviewImage.className = '';
+  let firstEffect = document.querySelector('.effects__radio');
+  firstEffect.checked = true;
+  scaleControl.value = '100%';
+  showSuccessModal();
+}
+
+export {changePreviewEffect, hideEditorHandler, closeSuccessForm, showErrorModal, failServerModal};

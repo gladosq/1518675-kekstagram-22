@@ -1,5 +1,6 @@
 /* global _:readonly */
-import 'https://cdn.jsdelivr.net/npm/lodash@4.17.20/lodash.min.js';
+const _ = require('lodash');
+
 import {getData} from './api.js';
 import {getRandomElement, sortFunction} from './utils.js';
 import {onClickPreview} from './big-picture.js';

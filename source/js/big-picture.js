@@ -19,6 +19,7 @@ function onClickPreview (photos) {
       pictureSection.classList.remove('hidden');
       showBigPicture(photos[index]);
       renderComments(photos[index]);
+
     });
   });
 }
@@ -49,6 +50,7 @@ function renderComments (photo) {
   let fragment = document.createDocumentFragment();
 
   let commentsPhotoValue = MAX_COMMENTS_PHOTO;
+
   if (photo.comments.length <= MAX_COMMENTS_PHOTO) {
     commentsPhotoValue = photo.comments.length;
     commentLoaderButton.classList.add('hidden');
@@ -71,40 +73,24 @@ function renderComments (photo) {
   socialCaption.textContent = photo.description;
   commentsContainer.appendChild(fragment);
 
-  let sum = 0;
-
-  commentLoaderButton.addEventListener('click', function () {
+  commentLoaderButton.addEventListener('click', function() {
+    clearComments();
     let fragment = document.createDocumentFragment();
-    if ((sum + MAX_COMMENTS_PHOTO + 5) <= photo.comments.length) {
-      for (let i = sum + MAX_COMMENTS_PHOTO; i < (sum + MAX_COMMENTS_PHOTO) + 5; i++) {
-        let newComment = templateComment.cloneNode(true);
-        newComment.querySelector('.social__picture').src = photo.comments[i].avatar;
-        newComment.querySelector('.social__picture').alt = photo.comments[i].name;
-        newComment.querySelector('.social__text').textContent = photo.comments[i].message;
-        fragment.appendChild(newComment);
-      }
 
-      sum+= 5;
-    } else {
-      let diffPhoto = photo.comments.length - (sum + MAX_COMMENTS_PHOTO);
-
-      for (let i = sum + MAX_COMMENTS_PHOTO; i < diffPhoto + MAX_COMMENTS_PHOTO + sum; i++) {
-
-        let newComment = templateComment.cloneNode(true);
-        newComment.querySelector('.social__picture').src = photo.comments[i].avatar;
-        newComment.querySelector('.social__picture').alt = photo.comments[i].name;
-        newComment.querySelector('.social__text').textContent = photo.comments[i].message;
-        fragment.appendChild(newComment);
-      }
-      commentLoaderButton.classList.add('hidden');
-
-      sum = sum + diffPhoto;
+    for (let i = 0; i < photo.comments.length; i++) {
+      let newComment = templateComment.cloneNode(true);
+      newComment.querySelector('.social__picture').src = photo.comments[i].avatar;
+      newComment.querySelector('.social__picture').alt = photo.comments[i].name;
+      newComment.querySelector('.social__text').textContent = photo.comments[i].message;
+      fragment.appendChild(newComment);
     }
-
+    socialCaption.textContent = photo.description;
     commentsContainer.appendChild(fragment);
+
+    commentLoaderButton.classList.add('hidden');
+
   });
 }
-
 
 closeButton.addEventListener('click', function() {
   hideBigPicture();

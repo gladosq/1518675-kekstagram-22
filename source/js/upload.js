@@ -1,5 +1,6 @@
 import noUiSlider from 'nouislider';
 import 'nouislider/distribute/nouislider.css';
+import {hashtagsInput} from './upload-form.js';
 
 const imgInput = document.querySelector('#upload-file');
 const imgEditor = document.querySelector('.img-upload__overlay');
@@ -15,6 +16,9 @@ const templateSuccessModal = document.querySelector('#success').content.querySel
 const mainPage = document.querySelector('.main');
 const templateErrorModal = document.querySelector('#error').content.querySelector('.error');
 const templateFailServerModal = document.querySelector('#fail-server').content.querySelector('.fail');
+const imgUploadBackground = document.querySelector('.img-upload__effect-level');
+const textHashtagsInput = document.querySelector('.text__hashtags');
+const textDescription = document.querySelector('.text__description');
 
 const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
 
@@ -41,6 +45,7 @@ imgInput.addEventListener('change', function() {
 
   imgEditor.classList.remove('hidden');
   document.body.classList.add('modal-open');
+  hashtagsInput.setCustomValidity('');
 });
 
 function hideEditor () {
@@ -53,6 +58,11 @@ function hideEditor () {
   firstEffect.checked = true;
   effectsSlider.classList.add('hidden');
   scaleControl.value = '100%';
+  hashtagsInput.style.borderColor = '';
+  hashtagsInput.style.color = '';
+  hashtagsInput.style.outline = '';
+  hashtagsInput.setCustomValidity('');
+  hashtagsInput.value = '';
 }
 
 function hideEditorHandler (e) {
@@ -166,9 +176,15 @@ function changePreviewEffect () {
         imgUploadPreview.style.filter = 'none';
         imgUploadPreview.className = 'img-upload__preview';
         scaleControl.value = '100%';
+        if (!imgUploadBackground.classList.contains('hidden')) {
+          imgUploadBackground.classList.add('hidden');
+        }
       } else {
         effectsSlider.noUiSlider.off();
         effectsSlider.classList.remove('hidden');
+        if (imgUploadBackground.classList.contains('hidden')) {
+          imgUploadBackground.classList.remove('hidden');
+        }
         imgUploadPreview.className = 'img-upload__preview';
         scaleControl.value = '100%';
         imgUploadPreview.classList.add(previewEffects[effect.id].class);
@@ -217,6 +233,8 @@ function showSuccessModal () {
 function showErrorModal () {
   imgEditor.classList.add('hidden');
   document.body.classList.remove('modal-open');
+  textHashtagsInput.value = '';
+  textDescription.value = '';
   let modal = templateErrorModal.cloneNode(true);
   mainPage.appendChild(modal);
   window.addEventListener('keydown', function (evt) {
@@ -257,6 +275,8 @@ function closeSuccessForm () {
   let firstEffect = document.querySelector('.effects__radio');
   firstEffect.checked = true;
   scaleControl.value = '100%';
+  textHashtagsInput.value = '';
+  textDescription.value = '';
   showSuccessModal();
 }
 

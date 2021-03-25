@@ -1,5 +1,4 @@
 const path = require('path');
-const _ = require('lodash');
 
 module.exports = {
   entry: './source/js/main.js',

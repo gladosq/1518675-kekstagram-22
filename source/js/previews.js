@@ -1,6 +1,4 @@
-/* global _:readonly */
-const _ = require('lodash');
-
+import {debounce} from 'lodash';
 import {getData} from './api.js';
 import {getRandomElement, sortFunction} from './utils.js';
 import {onClickPreview} from './big-picture.js';
@@ -90,10 +88,10 @@ function changeDiscussedButton () {
   })
 }
 
-filterDefaultButton.addEventListener('click', _.debounce(changeDefaultButton, RERENDER_DELAY));
+filterDefaultButton.addEventListener('click', debounce(changeDefaultButton, RERENDER_DELAY));
 
-filterRandomButton.addEventListener('click', _.debounce(changeRandomButton, RERENDER_DELAY));
+filterRandomButton.addEventListener('click', debounce(changeRandomButton, RERENDER_DELAY));
 
-filterDiscussedButton.addEventListener('click', _.debounce(changeDiscussedButton, RERENDER_DELAY));
+filterDiscussedButton.addEventListener('click', debounce(changeDiscussedButton, RERENDER_DELAY));
 
 export {createPreviewElements};

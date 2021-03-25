@@ -64,8 +64,13 @@ function checkSubmitForm (hashtags) {
       hashtagsInput.setCustomValidity('Хэштеги не должны повторяться');
       possibilitySubmit = false;
     } else if (hashtag == '#') {
-      hashtagsInput.setCustomValidity('Хэштеги не должен состоять из одной решётки');
+      hashtagsInput.setCustomValidity('Хэштеги не должны состоять из одной решётки');
       possibilitySubmit = false;
+    } else if ((hashtag.length > 2) && checkValidityHashtag(hashtag)) {
+      hashtagsInput.setCustomValidity('Хэштеги содержат недопустимые символы');
+      possibilitySubmit = false;
+    } else {
+      possibilitySubmit = true;
     }
 
     if (possibilitySubmit) {
@@ -84,13 +89,15 @@ submitForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
   checkSubmitForm(hashtagsInput.value);
 
-  const formData = new FormData(evt.target);
-
-  sendData(
-    () => closeSuccessForm(),
-    () => showErrorModal(),
-    new FormData(evt.target),
-  );
+  if (possibilitySubmit) {
+    sendData(
+      () => closeSuccessForm(),
+      () => showErrorModal(),
+      new FormData(evt.target),
+    );
+  }
 
   hashtagsInput.reportValidity();
 });
+
+export {hashtagsInput, possibilitySubmit};

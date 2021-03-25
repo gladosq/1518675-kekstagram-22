@@ -1,5 +1,6 @@
 import noUiSlider from 'nouislider';
 import 'nouislider/distribute/nouislider.css';
+
 import {hashtagsInput} from './upload-form.js';
 
 const imgInput = document.querySelector('#upload-file');

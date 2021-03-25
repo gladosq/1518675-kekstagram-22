@@ -1,4 +1,5 @@
-import 'https://unpkg.com/nouislider@14.6.3/distribute/nouislider.min.js';
+import noUiSlider from 'nouislider';
+import 'nouislider/distribute/nouislider.css';
 
 const imgInput = document.querySelector('#upload-file');
 const imgEditor = document.querySelector('.img-upload__overlay');
@@ -86,7 +87,7 @@ biggerButton.addEventListener('click', function() {
   }
 });
 
-window.noUiSlider.create(effectsSlider, {
+noUiSlider.create(effectsSlider, {
   range: {
     min: 0,
     max: 100,

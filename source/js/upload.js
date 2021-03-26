@@ -87,13 +87,13 @@ function changeValue (step) {
 }
 
 smallerButton.addEventListener('click', function() {
-  if (scaleControl.value != '25%') {
+  if (scaleControl.value !== '25%') {
     changeValue(-25);
   }
 });
 
 biggerButton.addEventListener('click', function() {
-  if (scaleControl.value != '100%') {
+  if (scaleControl.value !== '100%') {
     changeValue(25);
   }
 });
@@ -172,7 +172,7 @@ function changePreviewEffect () {
   effectsSlider.classList.add('hidden');
   effects.forEach((effect) => {
     effect.addEventListener('change', function() {
-      if (effect.id == 'effect-none') {
+      if (effect.id === 'effect-none') {
         effectsSlider.classList.add('hidden');
         imgUploadPreview.style.filter = 'none';
         imgUploadPreview.className = 'img-upload__preview';
@@ -219,7 +219,7 @@ function showSuccessModal () {
     modal.parentNode.removeChild(modal);
   })
   window.addEventListener('keydown', function (evt) {
-    if (evt.type === 'keydown' && evt.key == 'Escape') {
+    if (evt.type === 'keydown' && evt.key === 'Escape') {
       modal.parentNode.removeChild(modal);
     }
   })
@@ -239,7 +239,7 @@ function showErrorModal () {
   let modal = templateErrorModal.cloneNode(true);
   mainPage.appendChild(modal);
   window.addEventListener('keydown', function (evt) {
-    if (evt.type == 'keydown' && evt.key == 'Escape') {
+    if (evt.type === 'keydown' && evt.key === 'Escape') {
       modal.parentNode.removeChild(modal);
     }
   })
@@ -254,7 +254,7 @@ function failServerModal () {
   let modal = templateFailServerModal.cloneNode(true);
   mainPage.appendChild(modal);
   window.addEventListener('keydown', function (evt) {
-    if (evt.type == 'keydown' && evt.key == 'Escape') {
+    if (evt.type === 'keydown' && evt.key === 'Escape') {
       modal.parentNode.removeChild(modal);
     }
   })

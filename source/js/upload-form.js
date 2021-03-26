@@ -12,7 +12,7 @@ const invalidSymbols = ['#', '@', '$', '!', '~', '`', '"', '№', ';', '%', '^',
 function checkValidityHashtag (hashtag) {
   for (let i = 1; i < hashtag.length - 1; i++) {
     for (let j = 0; j < invalidSymbols.length; j++) {
-      if (hashtag[i] == invalidSymbols[j]) {
+      if (hashtag[i] === invalidSymbols[j]) {
         return false;
       }
     }
@@ -27,10 +27,10 @@ hashtagsInput.addEventListener('input', (evt) => {
   hashtags.forEach((hashtag) => {
     let lowerCaseValue = hashtag.toLowerCase();
 
-    if (lowerCaseValue[0] != '#') {
+    if (lowerCaseValue[0] !== '#') {
       hashtagsInput.setCustomValidity('Хэштег должен начинаться с решётки');
       possibilitySubmit = false;
-    } else if (checkValidityHashtag(lowerCaseValue) == false) {
+    } else if (checkValidityHashtag(lowerCaseValue) === false) {
       hashtagsInput.setCustomValidity('Введены некорректные символы');
       possibilitySubmit = false;
     } else if (lowerCaseValue.length > MAX_HASHTAG_LENGTH) {
@@ -47,7 +47,7 @@ hashtagsInput.addEventListener('input', (evt) => {
       possibilitySubmit = true;
     }
 
-    if (hashtagsInput.value == '') {
+    if (hashtagsInput.value === '') {
       hashtagsInput.setCustomValidity('');
       possibilitySubmit = true;
     }
@@ -63,7 +63,7 @@ function checkSubmitForm (hashtags) {
     if (hashtagsValues.indexOf(hashtag) !== hashtagsValues.lastIndexOf(hashtag)) {
       hashtagsInput.setCustomValidity('Хэштеги не должны повторяться');
       possibilitySubmit = false;
-    } else if (hashtag == '#') {
+    } else if (hashtag === '#') {
       hashtagsInput.setCustomValidity('Хэштеги не должны состоять из одной решётки');
       possibilitySubmit = false;
     } else if ((hashtag.length > 2) && checkValidityHashtag(hashtag)) {

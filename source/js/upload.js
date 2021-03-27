@@ -1,7 +1,10 @@
+const START_CONTROL_VALUE = 100;
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const STEP_OF_VALUE = 25;
+
 import noUiSlider from 'nouislider';
 import 'nouislider/distribute/nouislider.css';
-
-import {hashtagsInput} from './upload-form.js';
+import {hashtagsInput, descriptionInput} from './upload-form.js';
 
 const imgInput = document.querySelector('#upload-file');
 const imgEditor = document.querySelector('.img-upload__overlay');
@@ -21,12 +24,13 @@ const imgUploadBackground = document.querySelector('.img-upload__effect-level');
 const textHashtagsInput = document.querySelector('.text__hashtags');
 const textDescription = document.querySelector('.text__description');
 
-const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
-
-let scaleControlValue = 100;
-effectLevelValue.value = 100;
+let scaleControlValue = START_CONTROL_VALUE;
+effectLevelValue.value = START_CONTROL_VALUE;
 
 imgInput.addEventListener('change', function() {
+  window.removeEventListener('keydown', hideSuccessModalHandler);
+  window.removeEventListener('keydown', hideFailModalHandler);
+
   const imgFile = imgInput.files[0];
   const imgFileName = imgFile.name.toLowerCase();
 
@@ -42,6 +46,10 @@ imgInput.addEventListener('change', function() {
     })
 
     reader.readAsDataURL(imgFile);
+  }
+
+  if (!imgUploadBackground.classList.contains('hidden')) {
+    imgUploadBackground.classList.add('hidden');
   }
 
   imgEditor.classList.remove('hidden');
@@ -70,7 +78,9 @@ function hideEditorHandler (e) {
   if (e.type === 'keydown' && e.key !== 'Escape') {
     return;
   }
-  hideEditor();
+  if (hashtagsInput !== document.activeElement && descriptionInput !== document.activeElement) {
+    hideEditor();
+  }
 }
 
 cancelButton.addEventListener('click', hideEditorHandler);
@@ -88,13 +98,13 @@ function changeValue (step) {
 
 smallerButton.addEventListener('click', function() {
   if (scaleControl.value !== '25%') {
-    changeValue(-25);
+    changeValue(-STEP_OF_VALUE);
   }
 });
 
 biggerButton.addEventListener('click', function() {
   if (scaleControl.value !== '100%') {
-    changeValue(25);
+    changeValue(STEP_OF_VALUE);
   }
 });
 
@@ -175,8 +185,6 @@ function changePreviewEffect () {
       if (effect.id === 'effect-none') {
         effectsSlider.classList.add('hidden');
         imgUploadPreview.style.filter = 'none';
-        imgUploadPreview.className = 'img-upload__preview';
-        scaleControl.value = '100%';
         if (!imgUploadBackground.classList.contains('hidden')) {
           imgUploadBackground.classList.add('hidden');
         }
@@ -186,8 +194,6 @@ function changePreviewEffect () {
         if (imgUploadBackground.classList.contains('hidden')) {
           imgUploadBackground.classList.remove('hidden');
         }
-        imgUploadPreview.className = 'img-upload__preview';
-        scaleControl.value = '100%';
         imgUploadPreview.classList.add(previewEffects[effect.id].class);
         changeSliderOptions(previewEffects[effect.id].minValue, previewEffects[effect.id].maxValue, previewEffects[effect.id].start, previewEffects[effect.id].step);
 
@@ -211,6 +217,20 @@ function changeSliderOptions (minValue, maxValue, start, step) {
   })
 }
 
+function hideSuccessModalHandler (evt) {
+  if (evt.type === 'keydown' && evt.key === 'Escape') {
+    let modalShow = document.querySelector('.success');
+    modalShow.parentNode.removeChild(modalShow);
+  }
+}
+
+function hideFailModalHandler (evt) {
+  if (evt.type === 'keydown' && evt.key === 'Escape') {
+    let modal = document.querySelector('.error');
+    modal.parentNode.removeChild(modal);
+  }
+}
+
 function showSuccessModal () {
   let modal = templateSuccessModal.cloneNode(true);
   mainPage.appendChild(modal);
@@ -218,17 +238,8 @@ function showSuccessModal () {
   successButton.addEventListener('click', function () {
     modal.parentNode.removeChild(modal);
   })
-  window.addEventListener('keydown', function (evt) {
-    if (evt.type === 'keydown' && evt.key === 'Escape') {
-      modal.parentNode.removeChild(modal);
-    }
-  })
 
-  window.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('success')) {
-      modal.parentNode.removeChild(modal);
-    }
-  })
+  window.addEventListener('keydown', hideSuccessModalHandler);
 }
 
 function showErrorModal () {
@@ -238,16 +249,12 @@ function showErrorModal () {
   textDescription.value = '';
   let modal = templateErrorModal.cloneNode(true);
   mainPage.appendChild(modal);
-  window.addEventListener('keydown', function (evt) {
-    if (evt.type === 'keydown' && evt.key === 'Escape') {
-      modal.parentNode.removeChild(modal);
-    }
+  const errorButton = document.querySelector('.error__button');
+  errorButton.addEventListener('click', function () {
+    modal.parentNode.removeChild(modal);
   })
-  window.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('error') || evt.target.classList.contains('error__button')) {
-      modal.parentNode.removeChild(modal);
-    }
-  })
+
+  window.addEventListener('keydown', hideFailModalHandler);
 }
 
 function failServerModal () {
@@ -278,6 +285,7 @@ function closeSuccessForm () {
   scaleControl.value = '100%';
   textHashtagsInput.value = '';
   textDescription.value = '';
+  imgInput.value = '';
   showSuccessModal();
 }
 

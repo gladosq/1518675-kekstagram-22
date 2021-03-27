@@ -1,3 +1,6 @@
+const MAX_COMMENTS_PHOTO = 5;
+const ESC_KEYCODE = 27;
+
 const pictureSection = document.querySelector('.big-picture');
 const pictureUrl = pictureSection.querySelector('.big-picture__url');
 const pictureLikes = pictureSection.querySelector('.likes-count');
@@ -8,8 +11,6 @@ const commentCount = document.querySelector('.social__comment-count');
 const commentLoaderButton = document.querySelector('.comments-loader');
 const closeButton = document.querySelector('.big-picture__cancel');
 const templateComment = document.querySelector('#message').content.querySelector('.social__comment');
-
-const MAX_COMMENTS_PHOTO = 5;
 
 function onClickPreview (photos) {
   let picturesArray = document.querySelectorAll('.picture');
@@ -97,8 +98,7 @@ closeButton.addEventListener('click', function() {
 });
 
 window.addEventListener('keydown', function(evt) {
-  if (evt.keyCode === 27) {
-
+  if (evt.keyCode === ESC_KEYCODE) {
     hideBigPicture();
   }
 });

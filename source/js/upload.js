@@ -74,8 +74,8 @@ function hideEditor () {
   hashtagsInput.value = '';
 }
 
-function hideEditorHandler (e) {
-  if (e.type === 'keydown' && e.key !== 'Escape') {
+function hideEditorHandler (evt) {
+  if (evt.type === 'keydown' && evt.key !== 'Escape') {
     return;
   }
   if (hashtagsInput !== document.activeElement && descriptionInput !== document.activeElement) {
@@ -258,24 +258,34 @@ function showErrorModal () {
 }
 
 function failServerModal () {
+  window.addEventListener('keydown', failServerModalHandlerKeydown);
+  window.removeEventListener('click', failServerModalHandlerClick);
+
   let modal = templateFailServerModal.cloneNode(true);
   mainPage.appendChild(modal);
-  window.addEventListener('keydown', function (evt) {
-    if (evt.type === 'keydown' && evt.key === 'Escape') {
-      modal.parentNode.removeChild(modal);
-    }
-  })
-  window.addEventListener('click', function (evt) {
-    if (evt.target.classList.contains('fail') || evt.target.classList.contains('fail__button')) {
-      modal.parentNode.removeChild(modal);
-    }
-  })
+
+  window.addEventListener('keydown', failServerModalHandlerKeydown);
+  window.addEventListener('click', failServerModalHandlerClick);
+}
+
+function failServerModalHandlerClick (evt) {
+  if (evt.target.classList.contains('fail') || evt.target.classList.contains('fail__button')) {
+    let modal = document.querySelector('.fail');
+    modal.parentNode.removeChild(modal);
+  }
+}
+
+function failServerModalHandlerKeydown (evt) {
+  if (evt.type === 'keydown' && evt.key === 'Escape') {
+    let modal = document.querySelector('.fail');
+    modal.parentNode.removeChild(modal);
+  }
 }
 
 function closeSuccessForm () {
   imgEditor.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  effectLevelValue.value = 100;
+  effectLevelValue.value = START_CONTROL_VALUE;
   effectsSlider.classList.add('hidden');
   imgUploadPreview.className = 'img-upload__preview';
   imgUploadPreview.style.filter = 'none';

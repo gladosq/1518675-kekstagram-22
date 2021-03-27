@@ -1,5 +1,4 @@
 const MAX_COMMENTS_PHOTO = 5;
-const ESC_KEYCODE = 27;
 
 const pictureSection = document.querySelector('.big-picture');
 const pictureUrl = pictureSection.querySelector('.big-picture__url');
@@ -20,13 +19,13 @@ function onClickPreview (photos) {
       pictureSection.classList.remove('hidden');
       showBigPicture(photos[index]);
       renderComments(photos[index]);
-
     });
   });
 }
 
 function showBigPicture (photo) {
   renderPicture(photo);
+  window.addEventListener('keydown', hideBigPictureHandler);
 }
 
 function renderPicture (photo) {
@@ -41,9 +40,16 @@ function clearComments () {
   }
 }
 
+function hideBigPictureHandler (evt) {
+  if (evt.type === 'keydown' && evt.key === 'Escape') {
+    hideBigPicture();
+  }
+}
+
 function hideBigPicture () {
   document.body.classList.remove('modal-open');
   pictureSection.classList.add('hidden');
+  window.removeEventListener('keydown', hideBigPictureHandler);
 }
 
 function renderComments (photo) {
@@ -89,18 +95,11 @@ function renderComments (photo) {
     commentsContainer.appendChild(fragment);
 
     commentLoaderButton.classList.add('hidden');
-
   });
 }
 
 closeButton.addEventListener('click', function() {
   hideBigPicture();
-});
-
-window.addEventListener('keydown', function(evt) {
-  if (evt.keyCode === ESC_KEYCODE) {
-    hideBigPicture();
-  }
 });
 
 export {showBigPicture, renderComments, onClickPreview};

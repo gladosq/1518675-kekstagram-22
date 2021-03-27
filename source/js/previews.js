@@ -1,3 +1,7 @@
+const RERENDER_DELAY = 500;
+const SORTED_PHOTOS_SIZE = 30;
+const RANDOM_PHOTOS_SIZE = 10;
+
 import {debounce} from 'lodash';
 import {getData} from './api.js';
 import {getRandomElement, sortFunction} from './utils.js';
@@ -8,14 +12,13 @@ const filterRandomButton = document.querySelector('#filter-random');
 const filterDiscussedButton = document.querySelector('#filter-discussed');
 const picturesContainer = document.querySelector('.pictures');
 const templatePicture = document.querySelector('#picture').content.querySelector('.picture');
+const filtersContainer = document.querySelector('.img-filters');
 
-const RERENDER_DELAY = 500;
-
-function createPictureElement (indexArray) {
+function createPictureElement (indexPicture) {
   let newElement = templatePicture.cloneNode(true);
-  newElement.querySelector('.picture__img').src = indexArray.url;
-  newElement.querySelector('.picture__likes').textContent = indexArray.likes;
-  newElement.querySelector('.picture__comments').textContent = indexArray.comments.length;
+  newElement.querySelector('.picture__img').src = indexPicture.url;
+  newElement.querySelector('.picture__likes').textContent = indexPicture.likes;
+  newElement.querySelector('.picture__comments').textContent = indexPicture.comments.length;
   return newElement;
 }
 
@@ -48,6 +51,7 @@ function changeDefaultButton () {
     createPreviewElements(photos);
     onClickPreview(photos);
   });
+
 }
 
 function changeRandomButton () {
@@ -55,15 +59,15 @@ function changeRandomButton () {
   changeActiveFilter(filterRandomButton);
 
   getData((photos) => {
-    let cloneArray = [];
-    while (cloneArray.length < 10) {
+    let clonedPhotos = [];
+    while (clonedPhotos.length < RANDOM_PHOTOS_SIZE) {
       let randomElement = getRandomElement(photos);
-      if (!cloneArray.includes(randomElement)) {
-        cloneArray.push(randomElement);
+      if (!clonedPhotos.includes(randomElement)) {
+        clonedPhotos.push(randomElement);
       }
     }
-    createPreviewElements(cloneArray);
-    onClickPreview(cloneArray);
+    createPreviewElements(clonedPhotos);
+    onClickPreview(clonedPhotos);
   })
 }
 
@@ -71,27 +75,33 @@ function changeDiscussedButton () {
   clearPicturesContainer();
   changeActiveFilter(filterDiscussedButton);
 
-  let sortedArray = [];
+  let sortedPhotos = [];
 
   getData((photos) => {
-    for (let i = 1; i < 30; i++) {
+    for (let i = 1; i < SORTED_PHOTOS_SIZE; i++) {
       photos.forEach((photo) => {
-        if (photo.comments.length <= i && !sortedArray.includes(photo)) {
-          sortedArray.push(photo);
+        if (photo.comments.length <= i && !sortedPhotos.includes(photo)) {
+          sortedPhotos.push(photo);
         }
       })
     }
-    sortedArray.reverse(sortFunction);
+    sortedPhotos.reverse(sortFunction);
 
-    createPreviewElements(sortedArray);
-    onClickPreview(sortedArray);
+    createPreviewElements(sortedPhotos);
+    onClickPreview(sortedPhotos);
   })
 }
 
-filterDefaultButton.addEventListener('click', debounce(changeDefaultButton, RERENDER_DELAY));
+function changeDebouncedFilter (evt) {
+  if (evt.target.classList.contains('img-filters__button-default')) {
+    changeDefaultButton();
+  } else if (evt.target.classList.contains('img-filters__button-random')) {
+    changeRandomButton();
+  } else if (evt.target.classList.contains('img-filters__button-discussed')) {
+    changeDiscussedButton();
+  }
+}
 
-filterRandomButton.addEventListener('click', debounce(changeRandomButton, RERENDER_DELAY));
-
-filterDiscussedButton.addEventListener('click', debounce(changeDiscussedButton, RERENDER_DELAY));
+filtersContainer.addEventListener('click', debounce(changeDebouncedFilter, RERENDER_DELAY));
 
 export {createPreviewElements};

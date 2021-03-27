@@ -14,15 +14,8 @@ function getRandomElement (array) {
   return array[element];
 }
 
-function lengthStringCheck (string, maxStringSize) {
-  if ((typeof string) === 'string' && (typeof maxStringSize) === 'number') {
-    return (string.length < maxStringSize);
-  }
-  return false;
-}
-
 function sortFunction (a, b) {
   return (b - a);
 }
 
-export {getRandomNumber, lengthStringCheck, getRandomElement, sortFunction};
+export {getRandomElement, sortFunction};

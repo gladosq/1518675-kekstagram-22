@@ -1,10 +1,9 @@
 const RERENDER_DELAY = 500;
-const SORTED_PHOTOS_SIZE = 30;
 const RANDOM_PHOTOS_SIZE = 10;
 
 import {debounce} from 'lodash';
 import {getData} from './api.js';
-import {getRandomElement, sortFunction} from './utils.js';
+import {getRandomElement} from './utils.js';
 import {onClickPreview} from './big-picture.js';
 
 const filterDefaultButton = document.querySelector('#filter-default');
@@ -75,17 +74,10 @@ function changeDiscussedButton () {
   clearPicturesContainer();
   changeActiveFilter(filterDiscussedButton);
 
-  let sortedPhotos = [];
-
   getData((photos) => {
-    for (let i = 1; i < SORTED_PHOTOS_SIZE; i++) {
-      photos.forEach((photo) => {
-        if (photo.comments.length <= i && !sortedPhotos.includes(photo)) {
-          sortedPhotos.push(photo);
-        }
-      })
-    }
-    sortedPhotos.reverse(sortFunction);
+    let sortedPhotos = photos.sort(function(a, b) {
+      return b.comments.length - a.comments.length;
+    })
 
     createPreviewElements(sortedPhotos);
     onClickPreview(sortedPhotos);

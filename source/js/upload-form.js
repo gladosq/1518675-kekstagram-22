@@ -55,7 +55,7 @@ function checkSubmitForm (hashtags) {
     let hashtagsValues = hashtags.split(' ');
 
     hashtagsValues.some((hashtag) => {
-      if (hashtag[0] !== '#') {
+      if (hashtag[0] !== '#' && hashtag.length > 1) {
         hashtagsInput.setCustomValidity('Хэштег должен начинаться с решётки');
         possibilitySubmit = false;
         return true;

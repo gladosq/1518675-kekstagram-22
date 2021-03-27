@@ -14,8 +14,4 @@ function getRandomElement (array) {
   return array[element];
 }
 
-function sortFunction (a, b) {
-  return (b - a);
-}
-
-export {getRandomElement, sortFunction};
+export {getRandomElement};

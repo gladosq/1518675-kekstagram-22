@@ -40,6 +40,7 @@ function clearComments () {
   }
 }
 
+
 function hideBigPictureHandler (evt) {
   if (evt.type === 'keydown' && evt.key === 'Escape') {
     hideBigPicture();

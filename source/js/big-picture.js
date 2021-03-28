@@ -40,12 +40,12 @@ function clearComments () {
   }
 }
 
-
 function hideBigPictureHandler (evt) {
   if (evt.type === 'keydown' && evt.key === 'Escape') {
     hideBigPicture();
   }
 }
+
 
 function hideBigPicture () {
   document.body.classList.remove('modal-open');
